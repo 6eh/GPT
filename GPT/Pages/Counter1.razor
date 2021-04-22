@@ -1,0 +1,38 @@
+﻿@page "/counter1"
+@using System.Threading;
+@using Newtonsoft.Json;
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
+
+<h1>@Count</h1>
+<br />
+<p style="white-space: pre-line">@Text</p>
+<p style="white-space: pre-line">@resultString</p>
+
+<button @onclick=@StartCountdown>Start Countdown</button>
+
+@functions {
+    private string resultString { get; set; } = "";
+    private int Count { get; set; } = 10;
+    private string Text { get; set; }
+
+    class JSON
+    {
+        public string Predictions { get; set; }
+    }
+
+    void StartCountdown()
+    {
+        //string s = "Series not found \nError message";
+        resultString = "Series not found \nError message";
+        string json = "{\"predictions\":\"Хочешь пообщаться с ИИ или почитать книгу ?\nА поговорить с футболистом?\nС защитником?\nДа.\"}";
+        //string json = @"{""predictions"":""Хочешь пообщаться с ИИ или почитать книгу ?\nА поговорить с футболистом?\nС защитником?\nДа.\""}";
+        JSON newJsonDes = JsonConvert.DeserializeObject<JSON>(json);
+        //var v = JsonConvert.DeserializeObject<string>(json);
+        Text = newJsonDes.Predictions;
+
+        //Text = resultString;
+        //Text = json.Replace("\n", "<br />");
+        Console.WriteLine(Text);
+    }
+}

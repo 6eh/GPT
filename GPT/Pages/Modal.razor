@@ -1,0 +1,15 @@
+﻿@page "/modalexample"
+@inject IModalService modal
+@* https://github.com/Blazored/Modal *@
+
+<h3>Modal</h3>
+
+<button @onclick="@(() => modal.Show<FetchData>("Modal Example"))" class="btn btn-primary">View</button>
+<button @onclick="@(() => modal.Show<Counter>("Counter Modal"))" class="btn btn-primary">Counter</button>
+<button @onclick="@(() => modal.Show<Redirect>("Counter Modal"))" class="btn btn-primary">Redirect</button>
+@*<button @onclick="@(() => modal.Show<Areas.Identity.Pages.Account.LoginModel>("Modal Example"))" class="btn btn-primary">View</button>*@
+<hr />
+<b><a href="/Identity/Account/Login">Войдите</a></b> или <b><a href="/Identity/Account/Register">зарегистрируйтесь</a></b>, чтобы сохранять и публиковать тексты.
+@code {
+
+}

@@ -1,0 +1,53 @@
+﻿@page "/"
+
+<h1>Привет! Хочешь пообщаться с ИИ или почитать интересную историю?</h1>
+
+
+<EditForm Model="@GPTmodel" OnValidSubmit="@HandleValidSubmit">
+    <InputText id="find_customer" type="text" autocomplete="off" placeholder="Напишите затравку сюда" style="width: 90%" @bind-Value="GPTmodel.InputText" />
+    <br /><br />
+    <button class="btn btn-outline-dark" type="submit">Отправить</button>
+    <b>   @Label</b>
+    @if (Waiting == true)
+    {
+        @*<img src="https://i.gifer.com/origin/3f/3face8da2a6c3dcd27cb4a1aaa32c926.gif" width="32" height="32" alt="ждите">*@
+        <img src="https://thumbs.gfycat.com/AnnualConstantBalloonfish-small.gif" width="124" height="48" alt="ждите">
+    }
+</EditForm>
+
+<br />
+@Indexo
+<br />
+
+@if (LS != null && LS.Count > 0)
+{
+
+    @foreach (var v in LS)
+    {
+        <p>
+            <div class="text-light bg-dark" style="white-space: pre-line">
+
+                @v
+                @*<a href="URL"><u>Опубликовать</u></a>&nbsp<a href="URL"><u>Сохранить себе</u></a>*@
+                @*<button class="btn btn-outline-light" type="submit">Опубликовать</button>
+                    <button class="btn btn-outline-light" type="submit">Сохранить себе</button>*@
+                @{int index = (LS.IndexOf(v)); }
+                <br />
+                <AuthorizeView>
+                    <Authorized>
+                        <Button class="btn btn-outline-light" name="AddPurchase" @onclick="() => PublishButtonClick(index)">Опубликовать</Button>&nbsp<Button class="btn btn-outline-light" name="AddGift" @onclick="SaveButtonClick">Сохранить себе</Button>
+                    </Authorized>
+                    <NotAuthorized>
+                        <b><a href="/Identity/Account/Login">Войдите</a></b> или <b><a href="/Identity/Account/Register">зарегистрируйтесь</a></b>, чтобы сохранять и публиковать тексты.
+                    </NotAuthorized>
+                </AuthorizeView>
+                <hr />
+            </div>
+        </p>
+    }
+}
+@*if (@GPTmodel.Response != "")
+    {
+        <p style="white-space: pre-line">@GPTmodel.Response</p>
+    }
+*@

@@ -1,0 +1,91 @@
+﻿@page "/counter"
+@attribute [Authorize]
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<div class="d-flex flex-row">
+    <div class="p-2">Flex элемент 1</div>
+    <div class="p-2">Flex элемент 2</div>
+    <div class="p-2">Flex элемент 3</div>
+</div>
+<br />
+<br />
+<p>i1: @i1</p>
+<p>i2: @i2</p>
+<button class="btn btn-primary" @onclick="Tick">Tick</button>
+
+@if (LS != null)
+{
+    @foreach (var v in LS)
+    {
+        <div>
+            <span class="d-flex p-2">
+                <p class="text-light bg-dark">@v</p>
+            </span>
+        </div>
+    }
+}
+
+
+@code {
+    private int currentCount = 0;
+
+    private int i1 = 0;
+    private int i2 = 100;
+
+    List<string> LS;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private async Task Tick()
+    {
+        i1 = 0;
+        i2 = 100;
+        Tick_i1();
+        Tick_i2();
+        LS = new();
+        //LS.Add(i1.ToString());
+        //StateHasChanged();
+
+    }
+
+    private async Task Tick_i1()
+    {
+        while (true)
+        {
+            i1++;
+            await Task.Delay(100);
+            Console.WriteLine(i1);
+            LS.Add(i1.ToString());
+            ////StateHasChanged();
+            if (i1 > 99)
+                break;
+        }
+    }
+
+    private async Task Tick_i2()
+    {
+        while (true)
+        {
+            i2--;
+            await Task.Delay(100);
+            Console.WriteLine(i2);
+            ////StateHasChanged();
+            if (i2 < 1)
+                break;
+        }
+    }
+
+    //private async Task CurrentCount()
+    //{
+    //    await currentCount = 99999999;
+    //    //return currentCount;
+    //}
+
+}

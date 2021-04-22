@@ -1,0 +1,22 @@
+﻿@inherits LayoutComponentBase
+@inject IModalService modal
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <div class="main">
+        <div class="top-row px-4 auth">
+            <LoginDisplay />
+            <a href="/Information" target="_blank">Информация</a>
+            <button @onclick="@(() => modal.Show<Pages.Information>("Информация"))" class="btn btn-primary">Информация</button>
+        </div>
+
+        <div class="content px-4">
+            @Body
+        </div>
+    </div>
+</div>
+
+@*<BlazoredModal />*@
