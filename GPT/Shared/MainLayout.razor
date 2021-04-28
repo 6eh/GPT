@@ -9,8 +9,8 @@
     <div class="main">
         <div class="top-row px-4 auth">
             <LoginDisplay />
-            <a href="/Information" target="_blank">Информация</a>
-            <button @onclick="@(() => modal.Show<Pages.Information>("Информация"))" class="btn btn-primary">Информация</button>
+            @*<a href="/Information" target="_blank">Информация</a>*@
+            <button class="nav-link btn btn-link" @onclick="@(() => modal.Show<Pages.Information>("Информация"))">Информация</button>
         </div>
 
         <div class="content px-4">

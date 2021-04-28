@@ -2,11 +2,19 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #5A5A5A;
+    color: #F2F2F2;
 }
-
+ 
 a, .btn-link {
-    color: #0366d6;
+    /*color: #0366d6;*/
+    color: #34d603;
+    
 }
+    .btn-link:hover {
+        /*color: #25f53a;*/
+        color: #0DFF00;
+    }
 
 .btn-primary {
     color: #fff;
@@ -28,6 +36,10 @@ a, .btn-link {
 
 .validation-message {
     color: red;
+}
+
+#modalio {
+    color: #343a40;
 }
 
 #blazor-error-ui {

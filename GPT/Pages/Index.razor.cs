@@ -22,7 +22,7 @@ namespace GPT.Pages
 
         private class GPTclass
         {
-            public string InputText { get; set; }
+            public string InputText { get; set; } = "";
             public string Response { get; set; } = "";
             public string Predictions { get; set; }
         }
@@ -39,12 +39,12 @@ namespace GPT.Pages
         private async Task HandleValidSubmit()
         {
             Label = "";
-            Console.WriteLine("-" + GPTmodel.InputText + "-");
-            if (GPTmodel.InputText.Any())
+            //Console.WriteLine("-" + GPTmodel.InputText + "-");
+            if (GPTmodel.InputText.Any() && GPTmodel.InputText != "")
             {
                 try
                 {
-                    Console.WriteLine("!=null");
+                    //Console.WriteLine("!=null");
                     Label = "Ждём ответа от нейросети ...";
                     Waiting = true;
                     //await Task.Delay(1000);
@@ -60,14 +60,14 @@ namespace GPT.Pages
                 catch (Exception ex)
                 {
                     Label = ex.Message;
-                    Console.WriteLine("ex.Message: " + ex.Message);
+                    //Console.WriteLine("ex.Message: " + ex.Message);
                 }
                 //Label = "ResponseStatusCode (" + ResponseStatusCode + ")";
                 Waiting = false;
             }
             else
             {
-                Console.WriteLine("=null");
+                //Console.WriteLine("=null");
                 Label = "Напишите что-нибудь!";
                 ////StateHasChanged();  // Отрисовка в UI
             }
