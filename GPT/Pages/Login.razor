@@ -1,0 +1,27 @@
+﻿@page "/login"
+
+<h3>Login</h3>
+
+<form id="account" action="https://localhost:5001/Identity/Account/Login" method="post">
+    <input asp-for="Input.Email" class="form-control" />
+    <input asp-for="Input.Password" class="form-control" />
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Log in</button>
+    </div>
+</form>
+<form class="form-inline" asp-area="Identity" asp-page="/Identity/Account/Logout" asp-route-returnUrl="/" method="post">
+    <button type="submit" class="nav-link btn btn-link text-dark">Выйти</button>
+</form>
+
+
+    @*<EditForm Model="@IL" OnValidSubmit="@HandleValidSubmit">
+        <InputText id="email" type="text" autocomplete="off" placeholder="email" style="width: 100%" @bind-Value="IL.Email" />
+        <InputText id="email" type="password" autocomplete="off" placeholder="email" style="width: 100%" @bind-Value="IL.Password" />
+        <br />
+        <button class="btn btn-success btn-block" type="submit">Отправить</button>
+    </EditForm>*@
+    
+
+@code{
+        
+    }

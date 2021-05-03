@@ -4,8 +4,11 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using GPT.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 
 namespace GPT.Pages
@@ -13,12 +16,22 @@ namespace GPT.Pages
     public partial class Index
     {
         private string Label { get; set; } = "";
-        private string Indexo { get; set; } = "0";
 
         private bool Waiting = false;
         private string ResponseStatusCode { get; set; }
 
-        List<string> LS = new List<string>();
+        //class GenPosts
+        //{
+        //    public string Content { get; set; }
+        //    public string Header { get; set; } = "";
+        //    public string Status { get; set; } = "";
+        //}
+
+        //List<string> LS = new List<string>();
+
+        private List<PostStatus> LS = new();
+
+        private AuthenticationState _context;
 
         private class GPTclass
         {
@@ -35,6 +48,7 @@ namespace GPT.Pages
         }
 
         //private string FindText { get; set; } = "";
+
 
         private async Task HandleValidSubmit()
         {
@@ -127,29 +141,64 @@ namespace GPT.Pages
             {
                 var result = streamReader.ReadToEnd();
                 //GPTmodel.Response = result;
-                
+
                 JSON jsonResponse = JsonConvert.DeserializeObject<JSON>(result);
-                
+
                 GPTmodel.Response = jsonResponse.Predictions;
                 //label = "";
             }
             ResponseStatusCode = httpResponse.StatusCode.ToString();
+
+            PostStatus GP = new() { Content = GPTmodel.Response, Header = GPTmodel.InputText };
             LS.Reverse();
-            LS.Add(GPTmodel.Response);
+            //LS.Add(GPTmodel.Response);
+            LS.Add(GP);
             LS.Reverse();
             //Console.WriteLine(httpResponse.StatusCode);
             //GPTmodel.Response = httpResponse.StatusCode.ToString();
         }
 
-        [Authorize(Roles = "Admin")] private void PublishButtonClick(int index)
+        [Authorize(Roles = "Admin")]
+        private void PublishButtonClick(int index)
         {
-            Indexo = index.ToString();
+            //Indexo = index.ToString();
+            SaveOrPublishPost(index, true);
         }
 
-        private void SaveButtonClick()
+        private void SaveButtonClick(int index)
         {
-
+            SaveOrPublishPost(index, false);
         }
 
+        private void SaveOrPublishPost(int index, bool published = false)
+        {
+            Guid guId = Guid.NewGuid(); // Генерация ID поста
+
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                Post post = new Post()
+                {
+                    Id = guId.ToString(),
+                    Header = LS.ElementAt(index).Header,
+                    Content = LS.ElementAt(index).Content,
+                    Date = DateTime.Now,
+                    Published = published,
+                    UserId = _context.User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                    Rating = 0
+                };
+                //Console.WriteLine("Id: {0}, Content: {1}", post.Id, post.Content);
+
+                db.Posts.Add(post);
+                db.SaveChanges();
+
+                string _status;
+                if (published)
+                    _status = "Опубликовано";
+                else
+                    _status = "Сохранено";
+                    
+                LS.ElementAt(index).Status = _status;
+            }
+        }
     }
 }

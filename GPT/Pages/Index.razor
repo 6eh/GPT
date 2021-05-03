@@ -2,21 +2,37 @@
 
 <h3>Привет! Хочешь пообщаться с ИИ или почитать интересную историю?</h3>
 
-
 <EditForm Model="@GPTmodel" OnValidSubmit="@HandleValidSubmit">
     <InputText id="find_customer" type="text" autocomplete="off" placeholder="Напишите затравку сюда" style="width: 100%" @bind-Value="GPTmodel.InputText" />
     @*<textarea id="find_customert" type="text" autocomplete="off" placeholder="Напишите затравку сюда" style="width: 100%" cols="40" rows="5" @bind="GPTmodel.InputText">@data</textarea>*@
     <br /><br />
-    <button class="btn btn-success btn-block" type="submit">Отправить</button>
+    @*<button class="btn btn-success btn-block" type="submit">Отправить</button>*@
+    <button class="btn btn-success btn-block" type="submit" enabled>
+    @if (Waiting == true)
+    {
+        <div>        
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            <span class="sr-only">Loading...</span>
+            Ждите
+        </div>
+    }
+    else
+    {
+        <div>Отправить</div>
+    }
+</button>
     <div class=" m-1">
-        <b>@Label</b>
+        <div>@Label</div>
         @if (Waiting == true)
         {
             @*<img src="https://i.gifer.com/origin/3f/3face8da2a6c3dcd27cb4a1aaa32c926.gif" width="32" height="32" alt="ждите">*@
             @*<img src="https://thumbs.gfycat.com/AnnualConstantBalloonfish-small.gif" width="124" height="48" alt="ждите">*@
-            <img src="https://media1.giphy.com/media/21LLWn3VqXxxBbzrBm/source.gif" width="64" height="64" alt="ждите" />
+            @*<img src="https://media1.giphy.com/media/21LLWn3VqXxxBbzrBm/source.gif" width="64" height="64" alt="ждите" />*@
+            @*<div class="spinner-border spinner-border-sm text-success" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>*@
         }
-    </div>    
+    </div>
 </EditForm>
 
 <br />
@@ -34,15 +50,21 @@
     @*<div class="text-light bg-dark" style="white-space: pre-line">*@
     <div class="rounded text-light bg-dark p-3 m-3" style="white-space: pre-line">
 
-        @v
-        @*<a href="URL"><u>Опубликовать</u></a>&nbsp<a href="URL"><u>Сохранить себе</u></a>*@
-        @*<button class="btn btn-outline-light" type="submit">Опубликовать</button>
-            <button class="btn btn-outline-light" type="submit">Сохранить себе</button>*@
+        @v.Content
         @{int index = (LS.IndexOf(v)); }
         <br />
         <AuthorizeView>
             <Authorized>
-                <Button class="btn btn-outline-light" name="AddPurchase" @onclick="() => PublishButtonClick(index)">Опубликовать</Button>&nbsp<Button class="btn btn-outline-light" name="AddGift" @onclick="SaveButtonClick">Сохранить себе</Button>
+                @{_context = context;}
+                @if (v.Status == null)
+                {
+                    <button class="btn btn-outline-light" name="AddPurchase" @onclick="() => PublishButtonClick(index)">Опубликовать</button>
+                    <button class="btn btn-outline-light" name="AddGift" @onclick="() => SaveButtonClick(index)">Сохранить себе</button> }
+                else
+                {
+                    <b>@v.Status (id: @v.Header)</b>
+                }
+
             </Authorized>
             <NotAuthorized>
                 <b><a href="/Identity/Account/Login">Войдите</a></b> или <b><a href="/Identity/Account/Register">зарегистрируйтесь</a></b>, чтобы сохранять и публиковать тексты.

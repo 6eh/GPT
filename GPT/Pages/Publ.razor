@@ -1,0 +1,27 @@
+﻿@page "/publ"
+@using Microsoft.AspNetCore.Identity
+
+<h3>Publications</h3>
+
+<Button class="btn btn-outline-light" name="AddPurchase" @onclick="() => HandleSubmit()">Опубликовать</Button>
+
+<p>UserId: @CurrentUser.Id</p>
+<p>Mail: @CurrentUser.Mail</p>
+
+<AuthorizeView>
+    <Authorized>
+        <p>@context.User.Identity.Name</p>
+        @*@userId = @context.User.FindFirstValue(ClaimTypes.NameIdentifier)*@
+        @{_context = context;}
+        @*<p>U: @context.User.FindFirst(ClaimTypes.NameIdentifier).Value</p>*@
+    </Authorized>
+    <NotAuthorized>
+        <a href="Identity/Account/Register">Зарегистрироваться</a>
+        <a href="Identity/Account/Login">Войти</a>
+        @*<button class="btn btn-link" @onclick="@(() => modal.Show<Pages.Information>("Информация"))">Войти</button>*@
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+}

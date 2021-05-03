@@ -1,0 +1,30 @@
+﻿@page "/myposts"
+@attribute [Authorize]
+
+<h3>Мои посты</h3>
+
+<AuthorizeView>
+    <Authorized>
+        @*<p>@context.User.Identity.Name</p>*@
+        @{_context = context;}
+        @foreach (var v in PostsList.OrderBy(d => d.Date).Reverse())    @*Сортировка по дате и реверс (новое сверху)*@
+        {
+            <div class="rounded text-light bg-dark p-3 m-3" style="white-space: pre-line">
+                <h3 class="text-success">@v.Header</h3>
+                <p>@v.Content</p>
+                <p class="rounded text-info p-1 m-1">@v.Date.ToString("dd.MM.yyyy HH:mm") - Пользователь: @GetAuthor(v.UserId)</p>
+            </div>
+        }
+    </Authorized>
+    <NotAuthorized>
+        <a href="Identity/Account/Register">Зарегистрироваться</a>
+        <a href="Identity/Account/Login">Войти</a>
+        @*<button class="btn btn-link" @onclick="@(() => modal.Show<Pages.Information>("Информация"))">Войти</button>*@
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+@code {
+
+}

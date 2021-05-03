@@ -50,7 +50,7 @@ namespace GPT
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             //services.AddTransient<IEmailService, Services.EmailService>();
-            services.AddTransient<IEmailSender, Services.EmailService>();
+            services.AddTransient<IEmailSender, Services.EmailService>();   // Кастомный провайдер SMPT
             //services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddRazorPages();
