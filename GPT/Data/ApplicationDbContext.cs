@@ -22,7 +22,7 @@ namespace GPT.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql(@"Server =mclslicn.beget.tech;Database=mclslicn_gpt;User=mclslicn_gpt;Password=Farma646", new MySqlServerVersion(new Version(5, 7, 21)));
+            optionsBuilder.UseMySql(@"Server=Secret;Database=Secret;User=Secret;Password=Secret", new MySqlServerVersion(new Version(5, 7, 21)));
         }
     }
 }
